@@ -53,13 +53,15 @@ public:
 
     void exec( const string_t& cmd, const function_t<void,object_t>& cb ) { char* msg;
         if( sqlite3_exec( obj->fd, cmd.data(), callback, (void*)&cb, &msg) != SQLITE_OK ){
-            process::error( "SQL Error: ", msg ); sqlite3_free( msg );
+            string_t message ( msg ); sqlite3_free( msg );
+            process::error( "SQL Error: ", message );
         }
     }
 
     void exec( const string_t& cmd ) { char* msg;
         if( sqlite3_exec( obj->fd, cmd.data(), callback, nullptr, &msg) != SQLITE_OK ){
-            process::error( "SQL Error: ", msg ); sqlite3_free( msg );
+            string_t message ( msg ); sqlite3_free( msg );
+            process::error( "SQL Error: ", message );
         }
     }
 
