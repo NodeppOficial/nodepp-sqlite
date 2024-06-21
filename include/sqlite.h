@@ -4,7 +4,8 @@
 /*────────────────────────────────────────────────────────────────────────────*/
 
 #include <sqlite3.h>
-#include <nodepp/object.h>
+
+namespace nodepp { using sql_item_t = map_t<string_t,string_t>; }
 
 namespace nodepp { class sqlite_t {
 protected:
@@ -16,11 +17,11 @@ protected:
 
     static int callback( void* data, int argc, char **argv, char **azColName ) { 
 
-        object_t arguments; if( !data ){ return 0; }
-
-        for( auto x=0; x<argc; x++ ) 
+        sql_item_t arguments; 
+        
+        if( !data ){ return 0; } for ( auto x=0; x<argc; x++ ) 
         { arguments[ azColName[x] ] = argv[x] ? argv[x] : "NULL"; }
-        (*type::cast<function_t<void,object_t>>(data))( arguments );
+        (*type::cast<function_t<void,sql_item_t>>(data))( arguments );
 
         return 0;
     }
@@ -51,7 +52,7 @@ public:
     
     /*─······································································─*/
 
-    void exec( const string_t& cmd, const function_t<void,object_t>& cb ) { char* msg;
+    void exec( const string_t& cmd, const function_t<void,sql_item_t>& cb ) { char* msg;
         if( sqlite3_exec( obj->fd, cmd.data(), callback, (void*)&cb, &msg) != SQLITE_OK ){
             string_t message ( msg ); sqlite3_free( msg );
             process::error( "SQL Error: ", message );
