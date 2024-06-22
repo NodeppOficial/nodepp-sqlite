@@ -3,6 +3,7 @@
 
 /*────────────────────────────────────────────────────────────────────────────*/
 
+#include <nodepp/nodepp.h>
 #include <sqlite3.h>
 
 namespace nodepp { using sql_item_t = map_t<string_t,string_t>; }
