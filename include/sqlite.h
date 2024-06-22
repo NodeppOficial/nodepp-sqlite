@@ -17,10 +17,9 @@ protected:
     };  ptr_t<NODE> obj;
 
     static int callback( void* data, int argc, char **argv, char **azColName ) { 
-
         sql_item_t arguments; 
         
-        if( !data ){ return 0; } for ( auto x=0; x<argc; x++ ) 
+        if( !data ) { return 0; } for ( auto x=0; x<argc; x++ ) 
         { arguments[ azColName[x] ] = argv[x] ? argv[x] : "NULL"; }
         (*type::cast<function_t<void,sql_item_t>>(data))( arguments );
 
@@ -53,14 +52,14 @@ public:
     
     /*─······································································─*/
 
-    void exec( const string_t& cmd, const function_t<void,sql_item_t>& cb ) { char* msg;
+    void exec( const string_t& cmd, const function_t<void,sql_item_t>& cb ) const { char* msg;
         if( sqlite3_exec( obj->fd, cmd.data(), callback, (void*)&cb, &msg) != SQLITE_OK ){
             string_t message ( msg ); sqlite3_free( msg );
             process::error( "SQL Error: ", message );
         }
     }
 
-    void exec( const string_t& cmd ) { char* msg;
+    void exec( const string_t& cmd ) const { char* msg;
         if( sqlite3_exec( obj->fd, cmd.data(), callback, nullptr, &msg) != SQLITE_OK ){
             string_t message ( msg ); sqlite3_free( msg );
             process::error( "SQL Error: ", message );
