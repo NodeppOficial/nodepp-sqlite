@@ -12,7 +12,7 @@ namespace nodepp { class sqlite_t {
 protected:
 
     struct NODE {
-        sqlite3 *fd;
+        sqlite3 *fd = nullptr;
         int state = 1;
     };  ptr_t<NODE> obj;
 
