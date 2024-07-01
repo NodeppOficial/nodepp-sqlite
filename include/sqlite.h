@@ -59,11 +59,12 @@ public:
         }
     }
 
-    void exec( const string_t& cmd ) const { char* msg;
-        if( sqlite3_exec( obj->fd, cmd.data(), callback, nullptr, &msg) != SQLITE_OK ){
+    array_t<sql_item_t> exec( const string_t& cmd ) const { char* msg; array_t<sql_item_t> res;
+        function_t<void,sql_item_t> cb = [&]( sql_item_t args ){ res.push( args ); };
+        if( sqlite3_exec( obj->fd, cmd.data(), callback, (void*)&cb, &msg) != SQLITE_OK ){
             string_t message ( msg ); sqlite3_free( msg );
             process::error( "SQL Error: ", message );
-        }
+        }   return res;
     }
 
 };}
