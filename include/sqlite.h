@@ -13,7 +13,7 @@ protected:
 
     struct NODE {
         sqlite3 *fd = nullptr;
-        int state = 1;
+        int   state = 1;
     };  ptr_t<NODE> obj;
 
     static int callback( void* data, int argc, char **argv, char **azColName ) { 
