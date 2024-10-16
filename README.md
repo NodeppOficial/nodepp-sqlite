@@ -2,9 +2,11 @@
 Run sqlite in Nodepp
 
 ## Dependencies
-- libsqlite3-dev
-  - 🪟: `pacman -S mingw-w64-ucrt-x86_64-sqlite3`
-  - 🐧: `sudo apt install libsqlite3-dev`
+```bash
+#libsqlite3-dev
+🪟: pacman -S mingw-w64-ucrt-x86_64-sqlite3
+🐧: sudo apt install libsqlite3-dev
+```
 
 ## Example
 ```cpp
@@ -56,4 +58,6 @@ void onMain() {
 ```
 
 ## Compilation
-`g++ -o main main.cpp -I ./include -lsqlite3 ; ./main`
+```bash
+g++ -o main main.cpp -I ./include -lsqlite3 ; ./main
+```
