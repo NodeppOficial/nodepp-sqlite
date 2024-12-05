@@ -50,16 +50,20 @@ public:
         }
     }
     
+    sqlite_t () : obj( new NODE ) { obj->state = 0; }
+    
     /*─······································································─*/
 
-    void exec( const string_t& cmd, const function_t<void,sql_item_t>& cb ) const { char* msg;
+    void exec( const string_t& cmd, const function_t<void,sql_item_t>& cb ) const { 
+        if( obj->state == 0 ){ return; } char* msg;
         if( sqlite3_exec( obj->fd, cmd.data(), callback, (void*)&cb, &msg) != SQLITE_OK ){
             string_t message ( msg ); sqlite3_free( msg );
             process::error( "SQL Error: ", message );
         }
     }
 
-    array_t<sql_item_t> exec( const string_t& cmd ) const { char* msg; array_t<sql_item_t> res;
+    array_t<sql_item_t> exec( const string_t& cmd ) const { 
+        if( obj->state == 0 ){ return nullptr; } char* msg; array_t<sql_item_t> res;
         function_t<void,sql_item_t> cb = [&]( sql_item_t args ){ res.push( args ); };
         if( sqlite3_exec( obj->fd, cmd.data(), callback, (void*)&cb, &msg) != SQLITE_OK ){
             string_t message ( msg ); sqlite3_free( msg );
