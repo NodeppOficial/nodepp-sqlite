@@ -1,5 +1,5 @@
 #include <nodepp/nodepp.h>
-#include <sqlite.h>
+#include <sqlite/sqlite.h>
 
 using namespace nodepp;
 
